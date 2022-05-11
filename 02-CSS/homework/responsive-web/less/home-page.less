@@ -29,6 +29,15 @@
       border-radius: 20px;
       height: 100%;
     }
+    @media @phone{
+      .ondas, .tecnologia { //nombre de la clase de las fotos!!
+        display: none;
+        visibility: hidden;
+      }
+      .auricular{
+        width: 100%;
+      }
+    }
   }
 
   .musica-nueva {
@@ -50,8 +59,18 @@
     display: flex;
     justify-content: center;
 
+    @media @phone {
+      .flex(column-reverse, center, center);
+      padding: 1px; 
+    }
+
     .actual-text {
       width: 50%;
+      @media @phone{
+        width: 100%;
+        padding-left: 3px;
+        padding-right: 3px;
+      }
 
       h3 {
         margin-bottom: 10px;
@@ -62,8 +81,13 @@
       }
 
       .btn {
-        .btn(@wild-sand, @btn-bg-color, 10px)
+        .btn(@wild-sand, @btn-bg-color, 10px);
+        @media @phone{
+          width: 100%;
+          text-align: center;
+        }
       }
+      
     }
 
     .actual-img {
@@ -75,6 +99,10 @@
         height: auto;
         border-radius: 10px;
       }
+     @media @phone{
+       width: 100%;
+       text-align: center;
+     } 
     }
   }
 }
