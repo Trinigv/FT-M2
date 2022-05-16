@@ -9,7 +9,17 @@ var traverseDomAndCollectElements = function(matchFunc, startEl) {
   // usa matchFunc para identificar elementos que matchien
 
   // TU CÓDIGO AQUÍ
-  
+  if (matchFunc(startEl)) {
+    resultSet.push(startEl); 
+  }
+ 
+  for(let i = 0; i < startEl.children.length; i++ ){ // genera array con TODOS los hijos de doc
+    var elements = traverseDomAndCollectElements(matchFunc, startEl.children[i]);
+    resultSet = [...resultSet, ...elements]; //acumula resultSet anterior y elements
+  };
+
+  return resultSet; 
+
 };
 
 // Detecta y devuelve el tipo de selector
@@ -18,7 +28,16 @@ var traverseDomAndCollectElements = function(matchFunc, startEl) {
 
 var selectorTypeMatcher = function(selector) {
   // tu código aquí
-  
+  var arraySelector = selector.split("");
+  if(arraySelector[0] == '#'){
+    return 'id'; 
+  } else if(arraySelector[0] == '.'){
+    return "class"; 
+  } else if(selector === "div"){
+    return "tag";
+  } else {
+    return "tag.class";
+  }
 };
 
 // NOTA SOBRE LA FUNCIÓN MATCH
@@ -30,13 +49,27 @@ var matchFunctionMaker = function(selector) {
   var selectorType = selectorTypeMatcher(selector);
   var matchFunction;
   if (selectorType === "id") { 
-   
+    matchFunction = function (el){
+      var gettingId = "#" + el.id; 
+      if ( gettingId === selector) { return true;
+      } else { return false; }
+    }
+      
   } else if (selectorType === "class") {
+    matchFunction = function (el){
+      if( el.className && el.className.split(" ").includes(selector.slice(1))){
+        return true; } else { return false; }    
+    }
     
   } else if (selectorType === "tag.class") {
-    
-  } else if (selectorType === "tag") {
-    
+    matchFunction = function(el){ // el es un elemento de html
+    let sep = selector.split(".");
+    return (el.tagName.toLowerCase() === sep[0].toLowerCase()) && el.className && (el.className.split(" ").includes(sep[1]));
+    }
+  }
+    else if (selectorType === "tag") {
+    matchFunction = function (el) {
+    return el.tagName && (el.tagName.toLowerCase() === selector.toLowerCase());}
   }
   return matchFunction;
 };
